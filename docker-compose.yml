@@ -1,0 +1,70 @@
+services:
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   networks:
+  #     - fake-news-net
+  #   ports:
+  #     - "11435:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   dns:
+  #     - 8.8.8.8
+  #     - 8.8.4.4
+  #   # GPU support — uncomment if you have a GPU
+  #   # deploy:
+  #   #   resources:
+  #   #     reservations:
+  #   #       devices:
+  #   #         - driver: nvidia
+  #   #           count: all
+  #   #           capabilities: [gpu]
+
+  backend:
+    image: backend
+    pull_policy: build
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    networks:
+      - fake-news-net
+    env_file:
+      - .env
+    ports:
+      - "8001:8001"
+    # depends_on:
+    #   - ollama
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes:
+      - ./backend/trained:/backend/trained
+
+  # frontend:
+  #   image: frontend
+  #   pull_policy: build
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: frontend
+  #   networks:
+  #     - fake-news-net
+  #   env_file:
+  #     - ./frontend/.env
+  #   environment:
+  #     - BACKEND_URL=http://backend:8001
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - backend
+  #   dns:
+  #     - 8.8.8.8
+  #     - 8.8.4.4
+
+networks:
+  fake-news-net:
+    driver: bridge
+
+volumes:
+  ollama_data:
