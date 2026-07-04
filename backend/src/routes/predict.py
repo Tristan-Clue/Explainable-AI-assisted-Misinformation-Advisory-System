@@ -41,12 +41,6 @@ def build_prompt(text, lr_results, bert_results):
         Fake Probability: {bert_results["probabilities"]["fake"]}
         Real Probability: {bert_results["probabilities"]["real"]}
 
-        Supporting Words:
-        {bert_results["explanations"]["support_prediction"]}
-
-        Opposing Words:
-        {bert_results["explanations"]["against_prediction"]}
-
         Instructions:
         - Explain what both models think.
         - Mention if models agree or disagree.

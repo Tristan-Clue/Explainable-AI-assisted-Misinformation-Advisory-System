@@ -2,7 +2,6 @@ import torch
 import joblib
 
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from lime.lime_text import LimeTextExplainer
 
 from config import TRAINED_DIR
 
@@ -25,6 +24,3 @@ model = AutoModelForSequenceClassification.from_pretrained(BERT_MODEL)
 # Move model to the appropriate device and set it to evaluation mode
 model.to(device)
 model.eval()
-
-# Initialize LIME explainer
-lime_explainer = LimeTextExplainer(class_names=["Fake", "Real"])

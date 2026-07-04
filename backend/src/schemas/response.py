@@ -16,11 +16,6 @@ class LRExplanations(BaseModel):
     push_real: list[ExplanationWord]
 
 
-class BERTExplanations(BaseModel):
-    support_prediction: list[ExplanationWord]
-    against_prediction: list[ExplanationWord]
-
-
 class LRResult(BaseModel):
     prediction: str
     prediction_id: int
@@ -32,7 +27,6 @@ class BERTResult(BaseModel):
     prediction: str
     prediction_id: int
     probabilities: ProbabilityOutput
-    explanations: BERTExplanations
 
 
 class PredictResponse(BaseModel):
