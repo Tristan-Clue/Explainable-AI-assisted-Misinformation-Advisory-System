@@ -1,24 +1,24 @@
 services:
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: ollama
-  #   networks:
-  #     - fake-news-net
-  #   ports:
-  #     - "11435:11434"
-  #   volumes:
-  #     - ollama_data:/root/.ollama
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
-  #   # GPU support — uncomment if you have a GPU
-  #   # deploy:
-  #   #   resources:
-  #   #     reservations:
-  #   #       devices:
-  #   #         - driver: nvidia
-  #   #           count: all
-  #   #           capabilities: [gpu]
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    networks:
+      - fake-news-net
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    # GPU support — uncomment if you have a GPU
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
 
   backend:
     image: backend
