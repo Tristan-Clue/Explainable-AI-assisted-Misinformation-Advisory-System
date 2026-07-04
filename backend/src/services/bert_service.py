@@ -1,7 +1,7 @@
 import torch
 
-from src.services.model_loader import (tokenizer, model, device, lime_explainer)
-from src.schemas.response import BERTResult, ProbabilityOutput, BERTExplanations, ExplanationWord
+from services.model_loader import (tokenizer, model, device, lime_explainer)
+from schemas.response import BERTResult, ProbabilityOutput, BERTExplanations, ExplanationWord
 
 # Used by LIME for explanation
 def bert_predict_proba(texts):

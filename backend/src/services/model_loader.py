@@ -4,11 +4,11 @@ import joblib
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from lime.lime_text import LimeTextExplainer
 
-# Paths to trained models ## TO BE MOVED TO ENV
-BERT_MODEL = "trained/best_fine_tuned_bert"
-TFIDF_VECTOR = "trained/tfidf_vectorizer.pkl"
-LR_MODEL = "trained/logistic_model.pkl"
+from config import TRAINED_DIR
 
+BERT_MODEL = f"{TRAINED_DIR}/best_fine_tuned_bert"
+TFIDF_VECTOR = f"{TRAINED_DIR}/tfidf_vectorizer.pkl"
+LR_MODEL = f"{TRAINED_DIR}/logistic_model.pkl"
 
 # Check GPU for BERT model
 device = "cuda" if torch.cuda.is_available() else "cpu"

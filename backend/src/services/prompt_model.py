@@ -1,15 +1,10 @@
-from dotenv import load_dotenv
 from google import genai
 import ollama
-import os
 
-load_dotenv()
-
-OLLAMA_PORT = int(os.getenv("OLLAMA_PORT", "11434"))
-OLLAMA_BASE_URL = f"http://ollama:{OLLAMA_PORT}"
+from config import OLLAMA_BASE_URL, GEMINI_API_KEY
 
 try:
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    client = genai.Client(api_key=GEMINI_API_KEY)
 except Exception as e:
     print(f"Error initializing Gemini client: {e}")
     
@@ -51,4 +46,4 @@ def prompt_model(model: str, prompt: str, temperature=None) -> str:
 
     except Exception as e:
         print(f"An error occurred while generating response {e}")
-        return "Unable to generate response"
+        return f"Unable to generate response: {e}"

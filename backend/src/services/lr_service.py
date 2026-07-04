@@ -1,5 +1,5 @@
-from src.services.model_loader import (tfidf, lr_model)
-from src.schemas.response import LRResult, ProbabilityOutput, LRExplanations, ExplanationWord
+from services.model_loader import (tfidf, lr_model)
+from schemas.response import LRResult, ProbabilityOutput, LRExplanations, ExplanationWord
 
 def lr_predict(texts): 
     X = tfidf.transform([texts]) 
@@ -18,15 +18,15 @@ def lr_predict(texts):
         tfidf_value = X[0, idx] 
         weight = weights[idx]
         contribution = tfidf_value * weight
-        contributions.append((str(feature), float(contribution))) 
+        contributions.append(ExplanationWord(word=str(feature), score=float(contribution))) 
         
-    contributions = sorted(contributions, key=lambda x: abs(x[1]), reverse=True)
+    contributions = sorted(contributions, key=lambda x: abs(x.score), reverse=True)
     # Separate contributions into fake and real 
-    push_fake = [x for x in contributions if x[1] < 0] 
-    push_real = [x for x in contributions if x[1] > 0] 
+    push_fake = [x for x in contributions if x.score < 0] 
+    push_real = [x for x in contributions if x.score > 0] 
     
-    push_fake = sorted(push_fake, key=lambda x: x[1]) 
-    push_real = sorted(push_real, key=lambda x: x[1], reverse=True) 
+    push_fake = sorted(push_fake, key=lambda x: x.score) 
+    push_real = sorted(push_real, key=lambda x: x.score, reverse=True) 
     # Global explanation 
     # word_weights = list(zip(features_name, weights)) 
     # model_weights = sorted(word_weights, key=lambda x: x[1], reverse=True) 

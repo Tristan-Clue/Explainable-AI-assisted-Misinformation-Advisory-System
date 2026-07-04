@@ -1,13 +1,13 @@
 from fastapi import APIRouter
 from dotenv import load_dotenv
 
-from src.utils.cleaner import clean_text
-from src.services.lr_service import lr_predict
-from src.services.bert_service import bert_predict
-from src.services.prompt_model import prompt_model
+from utils.cleaner import clean_text
+from services.lr_service import lr_predict
+from services.bert_service import bert_predict
+from services.prompt_model import prompt_model
 
-from src.schemas.request import InputRequest
-from src.schemas.response import PredictResponse
+from schemas.request import InputRequest
+from schemas.response import PredictResponse
 
 # ========================== INITIALIZATION ==========================
 load_dotenv()
@@ -61,11 +61,11 @@ def predict(request: InputRequest):
     text = clean_text(text)
     lr_results = lr_predict(text)
     bert_results = bert_predict(text)
-    ollama_summary = prompt_model(OLLAMA_MODEL, build_prompt(text, lr_results, bert_results))
+    #ollama_summary = prompt_model(OLLAMA_MODEL, build_prompt(text, lr_results, bert_results))
 
     return PredictResponse(
         text=text,
         lr_results=lr_results,
         bert_results=bert_results,
-        ollama_summary=ollama_summary
+        ollama_summary="placeholder"#ollama_summary
     )
