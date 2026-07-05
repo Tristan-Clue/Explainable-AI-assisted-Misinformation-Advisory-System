@@ -61,6 +61,6 @@ def predict(request: InputRequest):
         bert_results=bert_results,
         ollama_summary=ollama_summary
     )
-    prediction_id = insert_prediction(prediction)
+    insert_prediction(prediction)
 
     return prediction
