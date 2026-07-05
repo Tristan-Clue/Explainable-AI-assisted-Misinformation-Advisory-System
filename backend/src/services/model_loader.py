@@ -16,11 +16,14 @@ print("Using device:", device)
 # Load Logistic Regression and TF-IDF models
 tfidf = joblib.load(TFIDF_VECTOR)
 lr_model = joblib.load(LR_MODEL)
+print(f"Loading Logistical Regression model from {LR_MODEL}")
 
 # Load BERT model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained(BERT_MODEL)
 model = AutoModelForSequenceClassification.from_pretrained(BERT_MODEL)
+print(f"Loading BERT model from {BERT_MODEL}")
 
 # Move model to the appropriate device and set it to evaluation mode
 model.to(device)
 model.eval()
+

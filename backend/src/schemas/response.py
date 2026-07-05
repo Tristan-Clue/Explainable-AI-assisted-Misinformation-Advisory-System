@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from datetime import datetime
 
 class ProbabilityOutput(BaseModel):
     fake: float
@@ -34,3 +34,15 @@ class PredictResponse(BaseModel):
     lr_results: LRResult
     bert_results: BERTResult
     ollama_summary: str
+
+# ======================= GET /history =======================
+class HistoryOverview(BaseModel):
+    id: int
+    preview: str
+    lr_prediction: str
+    bert_prediction: str
+    created_at: datetime
+
+class HistorySingle(PredictResponse):
+    id: int
+    created_at: datetime

@@ -3,13 +3,16 @@ import ollama
 
 from config import OLLAMA_BASE_URL, GEMINI_API_KEY
 
+gemini_client = None
+ollama_client = None
+
 try:
-    client = genai.Client(api_key=GEMINI_API_KEY)
+    gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 except Exception as e:
     print(f"Error initializing Gemini client: {e}")
     
 try:
-    client = ollama.Client(host=OLLAMA_BASE_URL)
+    ollama_client = ollama.Client(host=OLLAMA_BASE_URL)
 except Exception as e:
     print(f"Error initializing Ollama client: {e}")
 
@@ -24,19 +27,23 @@ def prompt_model(model: str, prompt: str, temperature=None) -> str:
             raise ValueError(f"Model {model} not found in available models.")
 
         if model.startswith("gemini"):
+            if gemini_client is None:
+                raise RuntimeError("Gemini client unavailable")
             print(f"Asking model: {model}")
             config = {}
             if temperature is not None:
                 config["temperature"] = temperature
-            response = client.models.generate_content(
+            response = gemini_client.models.generate_content(
                 model=model, contents=prompt, config=config
             ).text
         else:
+            if ollama_client is None:
+                raise RuntimeError("Ollama client unavailable")
             print(f"Asking model: {model} at URL {OLLAMA_BASE_URL}")
             options = {}
             if temperature is not None:
                 options["temperature"] = temperature
-            response = client.generate(
+            response = ollama_client.generate(
                 model=model,
                 prompt=prompt,
                 stream=False,
