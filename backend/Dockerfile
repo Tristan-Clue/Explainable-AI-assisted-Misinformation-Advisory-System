@@ -11,8 +11,9 @@ RUN pip install --no-cache-dir uv
 COPY pyproject.toml uv.lock ./
 RUN uv sync
 
-# Copy source files (includes src/app.py, src/week2/, src/data/)
+# Copy source files (includes src)
 COPY src/ ./src/
+COPY db/ ./db/
 
 # Expects traffic on port 8001
 EXPOSE 8001

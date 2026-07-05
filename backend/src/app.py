@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routes.predict import router as predict_router
 from routes.history import router as history_router
 from routes.history import router as historyid_router
@@ -13,3 +14,13 @@ init_db()
 app.include_router(predict_router)
 app.include_router(history_router)
 app.include_router(historyid_router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:8000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
