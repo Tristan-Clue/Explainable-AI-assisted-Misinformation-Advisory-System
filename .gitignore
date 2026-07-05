@@ -4,3 +4,4 @@ __pycache__
 .changes_log.txt
 trained
 .legacy/
+db/

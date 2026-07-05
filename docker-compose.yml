@@ -27,6 +27,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
+    depends_on:
+      - ollama
     networks:
       - fake-news-net
     env_file:
@@ -40,6 +42,7 @@ services:
       - 8.8.4.4
     volumes:
       - ./backend/trained:/backend/trained
+      - ./backend/db:/backend/db
 
   # frontend:
   #   image: frontend
@@ -68,3 +71,4 @@ networks:
 
 volumes:
   ollama_data:
+
