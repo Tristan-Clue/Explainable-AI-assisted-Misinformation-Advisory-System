@@ -48,11 +48,27 @@ analyzeBtn.addEventListener("click", async function () {
 });
 
 function displayResults(data) {
-  document.getElementById("lrPrediction").textContent = data.lr_results.prediction;
+  const lrPrediction = document.getElementById("lrPrediction");
+
+  lrPrediction.textContent = data.lr_results.prediction;
+
+  lrPrediction.className =
+    data.lr_results.prediction === "Fake"
+        ? "fake-text"
+        : "real-text";
+  //document.getElementById("lrPrediction").textContent = data.lr_results.prediction;
   document.getElementById("lrFake").textContent = toPercent(data.lr_results.probabilities.fake);
   document.getElementById("lrReal").textContent = toPercent(data.lr_results.probabilities.real);
 
-  document.getElementById("bertPrediction").textContent = data.bert_results.prediction;
+  const  bertPrediction = document.getElementById("bertPrediction");
+
+  bertPrediction.textContent = data.bert_results.prediction;
+
+  bertPrediction.className =
+    data.bert_results.prediction === "Fake"
+        ? "fake-text"
+        : "real-text";
+  //document.getElementById("bertPrediction").textContent = data.bert_results.prediction;
   document.getElementById("bertFake").textContent = toPercent(data.bert_results.probabilities.fake);
   document.getElementById("bertReal").textContent = toPercent(data.bert_results.probabilities.real);
 
@@ -99,9 +115,33 @@ function displayHistory(historyData) {
     row.innerHTML = `
       <td>${item.id}</td>
       <td>${item.preview}</td>
-      <td>${item.lr_prediction}</td>
-      <td>${item.bert_prediction}</td>
-      <td>${status}</td>
+      <td>
+          <span class="badge ${
+              item.lr_prediction === "Fake"
+                  ? "badge-fake"
+                  : "badge-real"
+          }">
+              ${item.lr_prediction}
+          </span>
+      </td>
+      <td>
+          <span class="badge ${
+              item.bert_prediction === "Fake"
+                  ? "badge-fake"
+                  : "badge-real"
+          }">
+              ${item.bert_prediction}
+          </span>
+      </td>
+      <td>
+          <span class="badge ${
+              status === "Agree"
+                  ? "badge-agree"
+                  : "badge-disagree"
+          }">
+              ${status}
+          </span>
+      </td>
       <td>${formatDate(item.created_at)}</td>
     `;
 

@@ -44,26 +44,22 @@ services:
       - ./backend/trained:/backend/trained
       - ./backend/db:/backend/db
 
-  # frontend:
-  #   image: frontend
-  #   pull_policy: build
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: frontend
-  #   networks:
-  #     - fake-news-net
-  #   env_file:
-  #     - ./frontend/.env
-  #   environment:
-  #     - BACKEND_URL=http://backend:8001
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - backend
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
+  frontend:
+    image: frontend
+    pull_policy: build
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    networks:
+      - fake-news-net
+    ports:
+      - "8000:8000"
+    depends_on:
+      - backend
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
 networks:
   fake-news-net:
