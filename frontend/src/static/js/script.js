@@ -72,8 +72,10 @@ function displayResults(data) {
   document.getElementById("bertFake").textContent = toPercent(data.bert_results.probabilities.fake);
   document.getElementById("bertReal").textContent = toPercent(data.bert_results.probabilities.real);
 
-  document.getElementById("ollamaSummary").textContent = data.ollama_summary;
-
+  //document.getElementById("ollamaSummary").textContent = data.ollama_summary;
+  const rawHtml = marked.parse(data.ollama_summary);
+  const cleanHtml = DOMPurify.sanitize(rawHtml);
+  document.getElementById("ollamaSummary").innerHTML = cleanHtml;
   showWords("fakeWords", data.lr_results.explanations.push_fake);
   showWords("realWords", data.lr_results.explanations.push_real);
 }
@@ -168,7 +170,7 @@ function showWords(elementId, words) {
   //   box.appendChild(p);
   // });
   const maxScore = Math.max(...words.map(item => Math.abs(item.score))) || 1;
-  
+
   words.forEach(item => {
 
     const container = document.createElement("div");
