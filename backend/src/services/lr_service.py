@@ -3,7 +3,7 @@ from schemas.response import LRResult, ProbabilityOutput, LRExplanations, Explan
 
 def lr_predict(texts): 
     X = tfidf.transform([texts]) 
-    # 1 = Real, 0 = Fake
+    # 0 = Real, 1 = Fake
     lr_pred = lr_model.predict(X)[0]
     # [fake_prob, real_prob] 
     lr_prob = lr_model.predict_proba(X)[0]
@@ -32,11 +32,11 @@ def lr_predict(texts):
     # model_weights = sorted(word_weights, key=lambda x: x[1], reverse=True) 
     
     return LRResult(
-        prediction="Real" if lr_pred == 1 else "Fake",
+        prediction="Real" if lr_pred == 0 else "Fake",
         prediction_id=lr_pred,
         probabilities=ProbabilityOutput(
-            fake=float(lr_prob[0]),
-            real=float(lr_prob[1])
+            real=float(lr_prob[0]),
+            fake=float(lr_prob[1])
         ),
         explanations=LRExplanations(
             push_fake=push_fake[:10],

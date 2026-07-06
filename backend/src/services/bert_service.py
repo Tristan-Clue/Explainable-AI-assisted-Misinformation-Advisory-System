@@ -22,10 +22,10 @@ def bert_predict(texts):
     bert_probs = torch.softmax(logits, dim=1)
 
     return BERTResult(
-        prediction="Real" if bert_pred == 1 else "Fake",
+        prediction="Real" if bert_pred == 0 else "Fake",
         prediction_id=bert_pred,
         probabilities=ProbabilityOutput(
-            fake=float(bert_probs[0][0].item()),
-            real=float(bert_probs[0][1].item())
+            real=float(bert_probs[0][0].item()),
+            fake=float(bert_probs[0][1].item())
         )
     )
