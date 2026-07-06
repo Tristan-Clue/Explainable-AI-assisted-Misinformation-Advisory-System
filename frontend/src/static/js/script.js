@@ -162,10 +162,52 @@ function showWords(elementId, words) {
     return;
   }
 
+  // words.forEach(item => {
+  //   const p = document.createElement("p");
+  //   p.textContent = `${item.word}: ${item.score.toFixed(3)}`;
+  //   box.appendChild(p);
+  // });
+  const maxScore = Math.max(...words.map(item => Math.abs(item.score))) || 1;
+  
   words.forEach(item => {
-    const p = document.createElement("p");
-    p.textContent = `${item.word}: ${item.score.toFixed(3)}`;
-    box.appendChild(p);
+
+    const container = document.createElement("div");
+    container.className = "word-item";
+
+    const label = document.createElement("div");
+    label.className = "word-label";
+
+    const word = document.createElement("span");
+    word.textContent = item.word;
+
+    const score = document.createElement("span");
+    score.textContent = item.score.toFixed(3);
+
+    label.appendChild(word);
+    label.appendChild(score);
+
+    const barBg = document.createElement("div");
+    barBg.className = "bar-bg";
+
+    const barFill = document.createElement("div");
+
+    // Fake words get red bars, Real words get green bars
+    if (elementId === "fakeWords") {
+      barFill.className = "bar-fill bar-fake";
+    } else {
+      barFill.className = "bar-fill bar-real";
+    }
+
+    // Normalize width to the largest score
+    const width = (Math.abs(item.score) / maxScore) * 100;
+    barFill.style.width = `${width}%`;
+
+    barBg.appendChild(barFill);
+
+    container.appendChild(label);
+    container.appendChild(barBg);
+
+    box.appendChild(container);
   });
 }
 
