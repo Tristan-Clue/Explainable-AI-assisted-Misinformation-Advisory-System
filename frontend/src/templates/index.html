@@ -4,126 +4,153 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medical Fake News Detection</title>
+
   <link rel="stylesheet" href="/static/css/style.css">
+
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
 
 <body>
+  <div class="app-layout">
 
-  <header class="header">
-    <h1>Medical Fake News Detection Dashboard</h1>
-    <p>Analyze medical news articles using Logistic Regression, BERT, and AI explanation.</p>
-  </header>
+    <aside class="sidebar">
+      <h2>MedFake AI</h2>
+      <p>Analysis System</p>
 
-  <main class="container">
+      <nav>
+        <a href="#inputSection">Analysis</a>
+        <a href="#dashboardSection">Dashboard</a>
+        <a href="#explanationSection">Explanation</a>
+        <a href="#historySection">History</a>
+      </nav>
+    </aside>
 
-    <section class="card">
-      <h2>Article Input</h2>
-      <textarea id="articleInput" placeholder="Paste the full text of a medical news article here..."></textarea>
-      <div class="action-row">
-        <button id="analyzeBtn">Analyze Article</button>
-        <div class="warningMessage" id="warningMessage"></div>
-      </div>
+    <div class="main-content">
 
-    </section>
+      <header class="header">
+        <h1>Medical Fake News Detection</h1>
+        <p>Analyze health-related news articles using Logistic Regression, BERT, and AI explanation.</p>
+      </header>
 
-    <section class="card">
-      <h2>Latest Analysis</h2>
+      <main class="container">
 
-      <div class="result-grid">
+        <section class="card" id="inputSection">
+          <h2>Analysis</h2>
+          <p class="section-desc">Paste a full medical news article below.</p>
 
-        <div class="result-card">
-          <h3>Logistic Regression</h3>
+          <textarea id="articleInput" placeholder="Paste the full text of a medical news article here..."></textarea>
 
-          <p>
-            <strong>Prediction:</strong>
-            <span id="lrPrediction">-</span>
-          </p>
-
-          <p>
-            <strong>Fake Probability:</strong>
-            <span id="lrFake">-</span>
-          </p>
-
-          <p>
-            <strong>Real Probability:</strong>
-            <span id="lrReal">-</span>
-          </p>
-        </div>
-
-        <div class="result-card">
-          <h3>BERT</h3>
-
-          <p>
-            <strong>Prediction:</strong>
-            <span id="bertPrediction">-</span>
-          </p>
-
-          <p>
-            <strong>Fake Probability:</strong>
-            <span id="bertFake">-</span>
-          </p>
-
-          <p>
-            <strong>Real Probability:</strong>
-            <span id="bertReal">-</span>
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>AI Explanation</h2>
-      <div class="summary-box">
-        <p id="ollamaSummary">AI explanation will appear here.</p>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Word Contribution (Logistic Regression)</h2>
-
-      <div class="word-grid">
-
-        <div>
-          <h3>Words Pushing Fake</h3>
-          <div id="fakeWords">
-            <p>-</p>
+          <div class="action-row">
+            <button id="analyzeBtn">Analyze Article</button>
+            <div class="warningMessage" id="warningMessage"></div>
           </div>
-        </div>
+        </section>
 
-        <div>
-          <h3>Words Pushing Real</h3>
-          <div id="realWords">
-            <p>-</p>
+        <section class="card" id="dashboardSection">
+          <h2>Dashboard</h2>
+
+          <div class="dashboard-grid">
+
+            <div class="dashboard-card">
+              <h3>LR Confidence Score</h3>
+              <div class="gauge-wrapper">
+                <canvas id="lrGaugeChart"></canvas>
+                <div class="gauge-value" id="lrConfidenceText">-</div>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <h3>BERT Confidence Score</h3>
+              <div class="gauge-wrapper">
+                <canvas id="bertGaugeChart"></canvas>
+                <div class="gauge-value" id="bertConfidenceText">-</div>
+              </div>
+            </div>
+
+            <div class="dashboard-card prediction-chart-card">
+              <div class="prediction-info">
+                <h3>Logistic Regression</h3>
+                <p><strong>Prediction:</strong> <span id="lrPrediction">-</span></p>
+                <p><strong>Real Probability:</strong> <span id="lrReal">-</span></p>
+                <p><strong>Fake Probability:</strong> <span id="lrFake">-</span></p>
+              </div>
+
+              <div class="pie-chart-box">
+                <canvas id="lrPieChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card prediction-chart-card">
+              <div class="prediction-info">
+                <h3>BERT</h3>
+                <p><strong>Prediction:</strong> <span id="bertPrediction">-</span></p>
+                <p><strong>Real Probability:</strong> <span id="bertReal">-</span></p>
+                <p><strong>Fake Probability:</strong> <span id="bertFake">-</span></p>
+              </div>
+
+              <div class="pie-chart-box">
+                <canvas id="bertPieChart"></canvas>
+              </div>
+            </div>
+
           </div>
-        </div>
 
-      </div>
-    </section>
+          <div class="card-inner">
+            <h3>Word Contribution (Logistic Regression)</h3>
 
-    <section class="card">
-      <h2>History</h2>
+            <div class="word-grid">
+              <div>
+                <h4>Words Pushing Fake</h4>
+                <div id="fakeWords">
+                  <p>-</p>
+                </div>
+              </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Preview</th>
-            <th>LR Prediction</th>
-            <th>BERT Prediction</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
-        </thead>
+              <div>
+                <h4>Words Pushing Real</h4>
+                <div id="realWords">
+                  <p>-</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <tbody id="historyBody">
-        </tbody>
-      </table>
-    </section>
+        <section class="card" id="explanationSection">
+          <h2>Explanation</h2>
+          <p class="section-desc">Detailed AI-generated explanation of the model results.</p>
 
-  </main>
+          <div class="summary-box">
+            <p id="ollamaSummary">AI explanation will appear here.</p>
+          </div>
+        </section>
+
+        <section class="card" id="historySection">
+          <h2>History</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Preview</th>
+                <th>LR Prediction</th>
+                <th>BERT Prediction</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="historyBody"></tbody>
+          </table>
+        </section>
+
+      </main>
+    </div>
+  </div>
 
   <script src="static/js/config.js"></script>
   <script src="static/js/script.js"></script>
