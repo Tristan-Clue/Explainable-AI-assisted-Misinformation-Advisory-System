@@ -1,7 +1,7 @@
 import json
 
-from datetime import datetime
 
+from utils.get_my_time import get_my_time
 from database.db import get_connection
 from schemas.response import PredictResponse, HistoryOverview, HistorySingle, LRResult, LRExplanations, ExplanationWord, ProbabilityOutput, BERTResult
 
@@ -30,7 +30,7 @@ def insert_prediction(prediction:  PredictResponse) -> int :
              json.dumps(prediction.lr_results.explanations.model_dump()),
              prediction.bert_results.prediction, prediction.bert_results.probabilities.fake,
              prediction.bert_results.probabilities.real, prediction.ollama_summary,
-             datetime.now()))
+             get_my_time()))
         conn.commit()
         return cur.lastrowid
     finally:
