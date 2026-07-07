@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ======================= LOAD ENV =======================
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2:3b")
+MODEL = os.getenv("MODEL", "llama3.2:3b")
 TRAINED_DIR = os.getenv("TRAINED_DIR", "/backend/trained")
 #DATABASE_URL = os.getenv("DATABASE_URL")
 
