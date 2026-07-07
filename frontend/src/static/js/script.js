@@ -30,8 +30,12 @@ analyzeBtn.addEventListener("click", async function () {
     });
 
     if (!response.ok) {
-      throw new Error("Backend returned an error.");
+      const error = await response.json();
+      showWarning(error.detail);
+      return;
     }
+
+    clearWarning();
 
     const data = await response.json();
 
@@ -46,6 +50,20 @@ analyzeBtn.addEventListener("click", async function () {
     analyzeBtn.disabled = false;
   }
 });
+
+function showWarning(message) {
+    const warning = document.getElementById("warningMessage");
+
+    warning.textContent = message;
+    warning.style.display = "inline";
+}
+
+function clearWarning() {
+    const warning = document.getElementById("warningMessage");
+
+    warning.textContent = "";
+    warning.style.display = "none";
+}
 
 function displayResults(data) {
   const lrPrediction = document.getElementById("lrPrediction");

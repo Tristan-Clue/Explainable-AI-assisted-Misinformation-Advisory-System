@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from utils.cleaner import clean_text
 from services.lr_service import lr_predict
@@ -8,7 +8,8 @@ from services.prompt_model import prompt_model
 from schemas.request import InputRequest
 from schemas.response import PredictResponse
 from database.repository import insert_prediction
-from config import OLLAMA_MODEL
+from config import MODEL
+from utils.verify import verify_medical
 
 # ========================== INITIALIZATION ==========================
 
@@ -80,10 +81,15 @@ def build_prompt(text, lr_results, bert_results):
 @router.post("/predict", response_model=PredictResponse)
 def predict(request: InputRequest):
     text = request.text
+    if not verify_medical(text):
+        raise HTTPException(
+            status_code=422,
+            detail="The submitted text does not appear to be a medical news article."
+        )
     text = clean_text(text)
     lr_results = lr_predict(text)
     bert_results = bert_predict(text)
-    ollama_summary = prompt_model(OLLAMA_MODEL, build_prompt(text, lr_results, bert_results))
+    ollama_summary = prompt_model(MODEL, build_prompt(text, lr_results, bert_results))
 
     prediction =  PredictResponse(
         text=text,

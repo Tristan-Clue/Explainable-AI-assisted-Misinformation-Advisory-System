@@ -27,6 +27,23 @@ body {
   margin: auto;
 }
 
+.action-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.warningMessage {
+    margin-top: 14px;
+    display: none;
+    color: #b71c1c;
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
 .card {
   background: white;
   padding: 22px;
