@@ -227,15 +227,15 @@ function drawPieChart(canvasId, fakeProb, realProb, type) {
   const chart = new Chart(ctx, {
     type: "pie",
     data: {
-      labels: ["Real", "Fake"],
+      labels: ["Fake", "Real"],
       datasets: [{
         data: [
-          (realProb * 100).toFixed(1),
-          (fakeProb * 100).toFixed(1)
+          (fakeProb * 100).toFixed(1),
+          (realProb * 100).toFixed(1)
         ],
         backgroundColor: [
-          "#16a34a",
-          "#dc2626"
+          "#dc2626",
+          "#16a34a"
         ],
         borderWidth: 2
       }]
@@ -305,8 +305,7 @@ function displayHistory(historyData) {
       item.lr_prediction === item.bert_prediction ? "Agree" : "Disagree";
 
     const row = document.createElement("tr");
-    row.className = "history-row";
-    row.title = "Click View to open this analysis";
+    row.title = "";
 
     row.innerHTML = `
       <td>${item.id}</td>
@@ -334,16 +333,13 @@ function displayHistory(historyData) {
       </td>
       <td>${formatDate(item.created_at)}</td>
       <td>
-        <button class="view-btn" type="button">View</button>
+        <button class="view-btn" type="button">View Analysis</button>
       </td>
     `;
 
-    row.querySelector(".view-btn").addEventListener("click", function (event) {
-      event.stopPropagation();
-      loadHistoryItem(item.id);
-    });
+    const viewBtn = row.querySelector(".view-btn");
 
-    row.addEventListener("click", function () {
+    viewBtn.addEventListener("click", function () {
       loadHistoryItem(item.id);
     });
 
@@ -362,6 +358,8 @@ async function loadHistoryItem(id) {
     }
 
     const data = await response.json();
+
+    document.getElementById("articleInput").value = data.text || "";
 
     displayResults(data);
     updateDashboardCharts(data);
