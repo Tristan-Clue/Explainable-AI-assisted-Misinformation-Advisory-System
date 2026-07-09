@@ -1,5 +1,5 @@
 from services.prompt_model import prompt_model
-from config import MODEL
+from config import OLLAMA_MODEL
 
 keywords = ['medical']
 
@@ -19,7 +19,7 @@ def verify_medical(text:str):
     - Do not include punctuation, explanations, or any other text
     - Do not use markdown, quotes, or formatting of any kind
     """
-    reply = prompt_model(MODEL, prompt)
+    reply = prompt_model(OLLAMA_MODEL, prompt)
     if reply.lower() == "yes":
         return True
     else:
